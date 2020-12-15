@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  header
+    h2.title Chat App
+  .container
+    .card
+      h3.card-title Sign Up
+      form.card-body(action="/join", method="post")
+        .form-group
+          label(for="displayname") Display Name:
+          input(type="text" name="displayname", placeholder="Can be seen by others...", required)
+        .form-group
+          label(for="username") Username:
+          input(type="text" name="username", placeholder="Unique name for identification", required)
+        .form-group
+          label(for="password") Password:
+          input(type="password" name="password", placeholder="Password for authentication", required)
+        button(type="submit") Sign Up

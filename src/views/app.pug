@@ -1,0 +1,62 @@
+extends layout
+block headContent
+  link(href="/stylesheets/app.css" rel="stylesheet")
+  //- script(src="/javascripts/app.js")
+  script(src="/socket.io/socket.io.js", defer)
+  script(src="/javascripts/alpine.js", defer)
+
+block content
+  .app(x-data="messageState()")
+    .messages
+    .template(x-for="message in messages", :key="message.id")
+      div(:class="{msg: true, out: message.from === 'me'}")
+        span.data(x-text="message.data")
+        span.time(x-text="message.time")
+          span(x-show="message.from === 'me'", :class="{sending: !message.sent, sent: message.sent}")
+
+    .chat-box
+      textarea(x-ref="text" x-model="currentMessage")
+      button(type="submit", @click.prevent="sendMessage()") Send
+
+  script.
+    function messageState() {
+      const messages = [
+        {
+          id: 1,
+          from: 'Adam',
+          to: 'me',
+          data: 'Hello Josh!',
+          timestamp: new Date(),
+          time: '12:04',
+        }
+      ];
+
+      return { messages, currentMessage: '', sendMessage };
+    }
+
+    function sendMessage() {
+      const message = this.currentMessage;
+
+      if (!message) return
+
+      const messages = this.messages;
+      const { text } = this.$refs;
+
+      const datetime = new Date();
+
+      const payload = {
+        id: 2,
+        data: message,
+        timestamp: datetime,
+        to: 'user2',
+        from: 'me',
+        // remove these later
+        time: `${datetime.getHours()}:${datetime.getMinutes().toString().padStart(2, '0')}`,
+        sent: true
+      };
+
+      this.currentMessage = '';
+      text.focus();
+
+      messages.push(payload);
+    } 

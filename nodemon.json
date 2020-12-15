@@ -1,0 +1,6 @@
+{
+  "verbose": true,
+  "exec": "ts-node bin/www.js",
+  "watch": ["**/*.js", "**/*.ts", "**/*.json"],
+  "ext": "js, ts, json"
+}
